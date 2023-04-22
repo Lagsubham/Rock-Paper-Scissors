@@ -1,36 +1,19 @@
-let round = prompt("How many rounds do you want to play?");
-game(round);
 
-function game(rounds) {
-  let i = 0;
-  let n = rounds;
+const rock=document.getElementById('rock-btn');
+const paper=document.getElementById('paper-btn');
+const scissors=document.getElementById('scissors-btn');
+const resultDiv = document.getElementById('result-div');
+
+rock.addEventListener('click',() => playRound('rock'));
+paper.addEventListener('click',() => playRound('paper'));
+scissors.addEventListener('click',() => playRound('scissors'));
+
+
   let userScore = 0;
   let computerScore = 0;
   
-  while (i < n) {
-    let user = prompt("What is your name?");
-    let userInputLowerCase = user.toLowerCase();
-    const playerSelection = userInputLowerCase;
+  function playRound(playerSelection){
     const computerSelection = getComputerChoice();
-    playRound(playerSelection, computerSelection);
-    i++;
-  }
-  
-  if (userScore > computerScore) {
-    console.log(`Congratulations, you win! Your score: ${userScore}, Computer's score: ${computerScore}`);
-  } else if (userScore < computerScore) {
-    console.log(`Sorry, you lose. Your score: ${userScore}, Computer's score: ${computerScore}`);
-  } else {
-    console.log(`It's a tie. Your score: ${userScore}, Computer's score: ${computerScore}`);
-  }
-  
-  function getComputerChoice() {
-    const hands = ['rock', 'paper', 'scissors'];
-    const randomIndex = Math.floor(Math.random() * 3);
-    return hands[randomIndex];
-  }
-  
-  function playRound(playerSelection, computerSelection) {
     let result = "";
     switch (playerSelection) {
       case "rock":
@@ -47,7 +30,7 @@ function game(rounds) {
             userScore++;
             break;
         }
-        break;
+         break;
       case "paper":
         switch (computerSelection) {
           case "rock":
@@ -62,7 +45,7 @@ function game(rounds) {
             computerScore++;
             break;
         }
-        break;
+         break;
       case "scissors":
         switch (computerSelection) {
           case "rock":
@@ -82,9 +65,48 @@ function game(rounds) {
         result = "Invalid input. Please try again.";
         break;
     }
-    console.log(result);
+    resultDiv.textContent=result;
+  updateScore();
+
+  if(checkWinner()){
+    endGame();
   }
-}
+  }
+
+  function getComputerChoice() {
+    const hands = ['rock', 'paper', 'scissors'];
+    const randomIndex = Math.floor(Math.random() * 3);
+    return hands[randomIndex];
+  }
+
+  function updateScore() {
+    let scoreBoard=document.getElementById('score-div');
+    scoreBoard.textContent = `player:${userScore} | computer:${computerScore}`;
+  
+  }
+
+  function checkWinner(){
+    if(userScore>=5 || computerScore>=5){
+      return true;
+    }
+  }
+
+  function endGame(){
+    let finalResult=(userScore>computerScore)? "Congratulations, you win!" :
+    (userScore < computerScore) ? "Sorry, you lose." :
+    "It's a tie.";
+    resultDiv.textContent=finalResult;
+    rock.disabled = true;
+    paper.disabled = true;
+    scissors.disabled = true;
+  }
+
+
+  
+ 
+ 
+  
+
 
 
   
